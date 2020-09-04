@@ -10,46 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200326223154) do
+ActiveRecord::Schema.define(version: 2020_03_26_223154) do
 
   create_table "commute_stops", force: :cascade do |t|
     t.integer "commute_id"
     t.integer "stop_id"
-    t.string  "label"
+    t.string "label"
   end
 
   create_table "commutes", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string   "name"
-    t.integer  "user_id"
+    t.string "name"
+    t.integer "user_id"
   end
 
   create_table "stops", force: :cascade do |t|
     t.integer "stop_id_KC"
     t.integer "stop_code"
-    t.string  "stop_name"
-    t.string  "stop_desc"
-    t.float   "stop_lat"
-    t.float   "stop_lon"
+    t.string "stop_name"
+    t.string "stop_desc"
+    t.float "stop_lat"
+    t.float "stop_lon"
     t.integer "zone_id"
-    t.string  "stop_url"
-    t.string  "location_type"
-    t.string  "parent_station"
-    t.string  "stop_timezone"
+    t.string "stop_url"
+    t.string "location_type"
+    t.string "parent_station"
+    t.string "stop_timezone"
   end
 
   create_table "user_stops", force: :cascade do |t|
     t.integer "user_id"
     t.integer "stop_id"
-    t.string  "label"
+    t.string "label"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "username"
+    t.string "username"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string   "address"
+    t.string "address"
   end
 
 end

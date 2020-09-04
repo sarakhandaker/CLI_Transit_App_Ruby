@@ -18,10 +18,7 @@ class TransitApp
         menu_response(response)
     end
     def welcome
-        puts "Welcome to King County Metro Transit App"
-        puts "This CLI app will allow you to look up the nearest KC Metro Stop to any address!"
-        puts "From there you can save and label your stops and organize your commutes."
-        puts "Enjoy!"
+        print "Welcome to King County Metro Transit App \nThis CLI app allows you to look up the nearest KC Metro Stop to any address!\nFrom there you can save and label your stops and organize your commutes"
         puts " _________________________ "  
         puts "|   |     |     |    | |  | " 
         puts "|___|_____|_____|____|_|__ \\ "
@@ -30,15 +27,12 @@ class TransitApp
         puts "```````````````````````````````````"
     end 
     def output_menu
-        puts ""
-        puts "Please choose from the following options"
-        puts ""
+        puts "\nPlease choose from the following options\n"
         puts "1. View, save and update your saved bus stops"
         puts "2. View, save and update your commutes"
         puts "3. Update user address"
         puts "4. Delete user"
-        puts "5. Exit transit app"
-        puts ""
+        puts "5. Exit transit app \n"
     end 
     def menu_response(response)
             case response.to_i
@@ -64,10 +58,8 @@ class TransitApp
         name = gets.chomp.downcase
         @user = User.find_or_create_by(username:name)
         puts "Welcome #{@user.username.capitalize}"
-        if @user.address
-        else 
-            puts "Please enter your address"
-            puts ""
+        if !@user.address
+            puts "Please enter your address\n"
             address = gets.chomp 
             @user.update(address: address)
             set_home_stop
@@ -79,12 +71,10 @@ class TransitApp
         puts "Would you like to set #{array[0].stop_name} that is #{array[1]} miles away as your 'Home' bus stop? (Yes/No)"
         res=gets.chomp.downcase
         if res=="yes"
-            bus_stop_id=array[0].id
-            UserStop.create(user_id: @user.id, stop_id: bus_stop_id, label: "home")
+            UserStop.create(user_id: @user.id, stop_id: array[0].id, label: "home")
             puts "Bus stop #{array[0].stop_name} has been saved as Home"
             puts ""
             puts ""
-        else 
         end
     end
     def user_stops
@@ -116,21 +106,20 @@ class TransitApp
         puts "|KING COUNTY METRO   | |   | "
         puts "`--(o)(o)--------------(o)-- " 
         puts "```````````````````````````````````"
-        return
     end 
 end 
 
 def closest_stop(loc_array)
     d=100000
     closest_stop=nil
-    stop_array=Stop.all
-    stop_array.each do|stop|
-        if distance_calc(stop,loc_array)<d
+    Stop.all.each do|stop|
+        dist= distance_calc(stop,loc_array)
+        if dist<d
             closest_stop=stop
-            d=distance_calc(stop, loc_array)
+            d=dist
         end
     end
-    array=[closest_stop, d.round(2)]
+    [closest_stop, d.round(2)]
 end
 
 def distance_calc(stop, loc_array)
