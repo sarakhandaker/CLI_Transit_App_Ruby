@@ -1,15 +1,12 @@
 module BusStopCRUD
     def output_stops_menu
-        puts ""
-        puts "Please choose from the following options"
-        puts ""
+        puts "\nPlease choose from the following options\n"
         puts "1. See your saved bus stops"
         puts "2. Look up and save a new bus stop"
         puts "3. Update location of saved bus stop"
         puts "4. Delete a saved bus stop"
         puts "5. See the most saved bus stop"
-        puts "You may also enter 'exit' to exit the application" 
-        puts ""
+        puts "You may also enter 'exit' to exit the application\n"
     end
     def stop_menu_response(response)
         if response == "exit"
@@ -27,19 +24,15 @@ module BusStopCRUD
                     puts ""
                     array.each {|stop| puts "#{stop.label.capitalize}: #{stop.stop.stop_name}"}
                 end
-                puts ""
-                puts ""
+                puts "\n\n"
                 menu_method
             when 2 #create user's stops
                 puts "Please enter an address to find the closest bus stop"
-                puts "Enter the address in the format: #### Street, City, State"
-                puts ""
+                puts "Enter the address in the format: #### Street, City, State\n"
                 address=gets.chomp
                 location = Geocoder.search(address)
                 if location== nil
-                    puts""
-                    puts "Sorry, that is not a valid address"
-                    puts ""
+                    puts"\nSorry, that is not a valid address\n"
                     menu_method
                 else 
                     loc_array=[location[0].latitude, location[0].longitude]
@@ -128,13 +121,11 @@ module BusStopCRUD
                 puts ""
                 menu_method
             else #error message
-                puts  "Error: invalid value, please select from the following menu options"
-                puts ""
+                puts  "Error: invalid value, please select from the following menu options\n"
                 output_stops_menu
                 response= gets.chomp
                 stop_menu_response(response)
             end
         end
     end
-
 end

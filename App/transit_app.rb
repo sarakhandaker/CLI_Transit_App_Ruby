@@ -106,19 +106,13 @@ class TransitApp
         puts "|KING COUNTY METRO   | |   | "
         puts "`--(o)(o)--------------(o)-- " 
         puts "```````````````````````````````````"
+        return
     end 
 end 
 
 def closest_stop(loc_array)
-    d=100000
-    closest_stop=nil
-    Stop.all.each do|stop|
-        dist= distance_calc(stop,loc_array)
-        if dist<d
-            closest_stop=stop
-            d=dist
-        end
-    end
+    closest_stop=Stop.all.min_by{|stop| distance_calc(stop,loc_array)}
+    d=distance_calc(closest_stop,loc_array)
     [closest_stop, d.round(2)]
 end
 
