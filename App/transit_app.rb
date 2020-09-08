@@ -115,7 +115,7 @@ end
 def closest_stop(loc_array)
     close_stop=Stop.all.min_by{|stop| distance_calc([stop.stop_lat, stop.stop_lon],loc_array)}
     d=distance_calc([close_stop.stop_lat, close_stop.stop_lon],loc_array)
-    [closest_stop, d.round(2)]
+    [close_stop, d.round(2)]
 end
 
 def distance_calc(loc1, loc2)
