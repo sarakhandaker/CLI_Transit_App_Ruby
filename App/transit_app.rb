@@ -48,14 +48,12 @@ class TransitApp
             when 5 #exiting app
                 exit_app
             else #error message
-                puts  "Error: invalid value, please select from the following menu options"
-                puts ""
+                puts  "Error: invalid value, please select from the following menu options\n"
             menu_method
             end
     end
     def log_in_and_sign_up
-        puts "What's your username"
-        puts ""
+        puts "What's your username\n"
         name = gets.chomp.downcase
         @user = User.find_or_create_by(username:name)
         puts "Welcome #{@user.username.capitalize}"
@@ -69,14 +67,11 @@ class TransitApp
     end 
     def set_home_stop
         array=@user.closest_stop
-        puts""
-        puts "Would you like to set #{array[0].stop_name} that is #{array[1]} miles away as your 'Home' bus stop? (Yes/No)"
+        puts "\nWould you like to set #{array[0].stop_name} that is #{array[1]} miles away as your 'Home' bus stop? (Yes/No)"
         res=gets.chomp.downcase
         if res=="yes"
             UserStop.create(user_id: @user.id, stop_id: array[0].id, label: "home")
-            puts "Bus stop #{array[0].stop_name} has been saved as Home"
-            puts ""
-            puts ""
+            puts "Bus stop #{array[0].stop_name} has been saved as Home\n\n"
         end
     end
     def user_stops
@@ -85,8 +80,7 @@ class TransitApp
         stop_menu_response(stop_response)
     end 
     def update_address
-        puts "Please enter your new address"
-        puts ""
+        puts "Please enter your new address\n"
         address = gets.chomp 
         @user.update(address: address)
         set_home_stop
@@ -94,14 +88,11 @@ class TransitApp
     end
     def delete_user
         @user.destroy
-        puts ""
-        puts "Your account has been deleted!"
-        puts ""
+        puts "\nYour account has been deleted!\n\n"
         exit_app
     end
     def exit_app
-        puts ""
-        puts "Safe Travels!"
+        puts "\nSafe Travels!"
         puts " _________________________ "  
         puts "|   |     |     |    | |  | " 
         puts "|___|_____|_____|____|_|__ \\ "
