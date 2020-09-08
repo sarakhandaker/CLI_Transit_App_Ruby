@@ -43,52 +43,38 @@ module BusStopCRUD
                     puts ""
                     res=gets.chomp.downcase
                     if res =="yes"
-                        puts "What would you like to label this bus stop?"
-                        puts ""
+                        puts "What would you like to label this bus stop?\n"
                         stop_label=gets.chomp.downcase
                         UserStop.create(user_id: @user.id, stop_id: array[0].id, label: stop_label)
-                        puts "Bus stop #{array[0].stop_name} has been saved as #{stop_label.capitalize}"
-                        puts ""
-                        puts ""
+                        puts "Bus stop #{array[0].stop_name} has been saved as #{stop_label.capitalize}\n\n"
                         menu_method
                     else 
                         menu_method
                     end
                 end
             when 3
-                puts ""
-                puts "Please enter the label of the bus stop you would like to update"
-                puts ""
+                puts "\nPlease enter the label of the bus stop you would like to update\n"
                 label=gets.chomp.downcase
                 user_stop=UserStop.find_by(user: @user,label: label)
                 if user_stop== nil
-                    puts""
-                    puts "Sorry, #{label.capitalize} is not a saved bus stop"
-                    puts ""
+                    puts "\nSorry, #{label.capitalize} is not a saved bus stop\n"
                     menu_method
                 else
                     puts "Please enter the new address to find the closest bus stop"
-                    puts "Enter the address in the format: #### Street, City, State"
-                    puts ""
+                    puts "Enter the address in the format: #### Street, City, State\n"
                     address=gets.chomp
                     location = Geocoder.search(address)
                     if location== nil
-                        puts""
-                        puts "Sorry, that is not a valid address"
-                        puts ""
+                        puts "\nSorry, that is not a valid address\n"
                         menu_method
                     else 
                         loc_array=[location[0].latitude, location[0].longitude]
                         array=closest_stop(loc_array)
-                        puts""
-                        puts "Would you like to save #{array[0].stop_name} that is #{array[1]} miles away from the address as #{label.capitalize}? (Yes/No)"
-                        puts ""
+                        puts "\nWould you like to save #{array[0].stop_name} that is #{array[1]} miles away from the address as #{label.capitalize}? (Yes/No)\n"
                         res=gets.chomp.downcase
                         if res =="yes"
                             user_stop.update(stop_id: array[0].id)
-                            puts "Bus stop #{array[0].stop_name} has been saved as #{label.capitalize}"
-                            puts ""
-                            puts ""
+                            puts "Bus stop #{array[0].stop_name} has been saved as #{label.capitalize}\n\n"
                             menu_method
                         else 
                             menu_method
@@ -96,9 +82,7 @@ module BusStopCRUD
                     end
                 end
             when 4 #delete saved stops
-                puts ""
-                puts "Please enter the label of the bus stop you would like to delete"
-                puts ""
+                puts "\nPlease enter the label of the bus stop you would like to delete\n"
                 label=gets.chomp.downcase
                 stop_id=UserStop.find_by(label: label, user: @user).stop_id
                 @user.commutes.map do|commute|
@@ -111,15 +95,10 @@ module BusStopCRUD
                         UserStop.destroy(user_stop.id)
                     end
                 end
-                puts "Bus stop has been removed from your saved list"
-                puts ""
-                puts ""
+                puts "Bus stop has been removed from your saved list\n\n"
                 menu_method
             when 5
-                puts ""
-                puts "Bus stop that is saved the most frequently is: #{UserStop.most_saved.stop_name}"
-                puts ""
-                puts ""
+                puts "\nBus stop that is saved the most frequently is: #{UserStop.most_saved.stop_name}\n\n"
                 menu_method
             else #error message
                 puts  "Error: invalid value, please select from the following menu options\n"
