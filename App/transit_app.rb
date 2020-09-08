@@ -1,4 +1,3 @@
-require 'pry'
 require 'geocoder'
 require_relative "./commute_CRUD.rb"
 require_relative "./bus_stop_CRUD.rb"
@@ -114,28 +113,12 @@ class TransitApp
 end 
 
 def closest_stop(loc_array)
-    closest_stop=Stop.all.min_by{|stop| distance_calc(stop,loc_array)}
-    d=distance_calc(closest_stop,loc_array)
+    close_stop=Stop.all.min_by{|stop| distance_calc([stop.stop_lat, stop.stop_lon],loc_array)}
+    d=distance_calc([close_stop.stop_lat, close_stop.stop_lon],loc_array)
     [closest_stop, d.round(2)]
 end
 
-def distance_calc(stop, loc_array)
-    loc1 =loc_array
-    loc2 = [stop.stop_lat, stop.stop_lon]
-     rad_per_deg = Math::PI/180  # PI / 180
-     rm = 6371  * 1000             # Earth radius in kilometers to meters
-     dlat_rad = (loc2[0]-loc1[0]) * rad_per_deg  # Delta, converted to rad
-     dlon_rad = (loc2[1]-loc1[1]) * rad_per_deg
-     lat1_rad, lon1_rad = loc1.map {|i| i * rad_per_deg }
-     lat2_rad, lon2_rad = loc2.map {|i| i * rad_per_deg }
-     a = Math.sin(dlat_rad/2)**2 + Math.cos(lat1_rad) * Math.cos(lat2_rad) * Math.sin(dlon_rad/2)**2
-     c = 2 * Math::atan2(Math::sqrt(a), Math::sqrt(1-a))
-     (rm * c)*0.000621371 # Delta in miles from meters
-end
-
-def distance_calc_stops(stop1, stop2)
-    loc1 =[stop1.stop_lat, stop1.stop_lon]
-    loc2 = [stop2.stop_lat, stop2.stop_lon]
+def distance_calc(loc1, loc2)
      rad_per_deg = Math::PI/180  # PI / 180
      rm = 6371  * 1000             # Earth radius in kilometers to meters
      dlat_rad = (loc2[0]-loc1[0]) * rad_per_deg  # Delta, converted to rad

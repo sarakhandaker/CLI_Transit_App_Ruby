@@ -33,7 +33,7 @@ module CommuteCRUD
                 array.each do |commute|
                     label1=UserStop.find_by(stop_id: commute.stops[0].id, user: @user).label
                     label2=UserStop.find_by(stop_id: commute.stops[1].id, user: @user).label
-                    distance = distance_calc_stops(commute.stops[0], commute.stops[1])
+                    distance = distance_calc([commute.stops[0].stop_lat, commute.stops[0].stop_lon], [commute.stops[1].stop_lat, commute.stops[1].stop_lon])
                     distance_array << distance
                     puts "#{commute.name.capitalize} commute from #{label1.capitalize} to #{label2.capitalize} is #{distance.round(2)} miles"
                     end
