@@ -15,6 +15,7 @@ module CommuteCRUD
         puts "You may also enter 'exit' to exit the application" 
     end
     def commute_menu_response(response)
+        system 'clear'
         if response=='exit'
             exit_app
             return

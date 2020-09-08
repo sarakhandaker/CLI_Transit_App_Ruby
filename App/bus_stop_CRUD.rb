@@ -9,6 +9,7 @@ module BusStopCRUD
         puts "You may also enter 'exit' to exit the application\n"
     end
     def stop_menu_response(response)
+        system 'clear'
         if response == "exit"
             exit_app
             return

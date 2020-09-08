@@ -8,6 +8,7 @@ class TransitApp
     include BusStopCRUD
     attr_reader :user
     def run
+        system 'clear'
         welcome 
         log_in_and_sign_up
         menu_method
@@ -15,6 +16,7 @@ class TransitApp
     def menu_method
         output_menu
         response= gets.chomp
+        system 'clear'
         menu_response(response)
     end
     def welcome
@@ -58,6 +60,7 @@ class TransitApp
         name = gets.chomp.downcase
         @user = User.find_or_create_by(username:name)
         puts "Welcome #{@user.username.capitalize}"
+        system 'clear'
         if !@user.address
             puts "Please enter your address\n"
             address = gets.chomp 

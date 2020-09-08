@@ -1,4 +1,3 @@
-require 'pry'
 Stop.destroy_all
 
 data_arr = []
@@ -10,7 +9,7 @@ data_arr.each do |each_stop|
     each_stop=each_stop.split(",")
     each_stop[2]=each_stop[2][1...-1]
     Stop.create(
-        stop_id_KC:   each_stop[0].to_i, 
+        stop_id_KC: each_stop[0].to_i, 
         stop_code: each_stop[1].to_i, 
         stop_name: each_stop[2], 
         stop_desc: each_stop[3], 
