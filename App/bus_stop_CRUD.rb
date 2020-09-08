@@ -17,16 +17,13 @@ module BusStopCRUD
             case response.to_i
             when 1 #read user's stops
                 array=@user.user_stops
-                puts ""
                 if  array.length <1
-                    puts "You have no saved bus stops"
+                    puts "\nYou have no saved bus stops"
                 else 
-                    puts "Here are your saved bus stops:"
-                    puts ""
+                    puts "\nHere are your saved bus stops:\n"
                     array.each {|stop| puts "#{stop.label.capitalize}: #{stop.stop.stop_name}"}
                 end
                 puts "\n\n"
-                menu_method
             when 2 #create user's stops
                 puts "Please enter an address to find the closest bus stop"
                 puts "Enter the address in the format: #### Street, City, State\n"
@@ -34,22 +31,16 @@ module BusStopCRUD
                 location = Geocoder.search(address)
                 if location== nil
                     puts"\nSorry, that is not a valid address\n"
-                    menu_method
                 else 
                     loc_array=[location[0].latitude, location[0].longitude]
                     array=closest_stop(loc_array)
-                    puts""
-                    puts "Would you like to save #{array[0].stop_name} that is #{array[1]} miles away from the address? (Yes/No)"
-                    puts ""
+                    puts "\nWould you like to save #{array[0].stop_name} that is #{array[1]} miles away from the address? (Yes/No)\n"
                     res=gets.chomp.downcase
                     if res =="yes"
                         puts "What would you like to label this bus stop?\n"
                         stop_label=gets.chomp.downcase
                         UserStop.create(user_id: @user.id, stop_id: array[0].id, label: stop_label)
                         puts "Bus stop #{array[0].stop_name} has been saved as #{stop_label.capitalize}\n\n"
-                        menu_method
-                    else 
-                        menu_method
                     end
                 end
             when 3
@@ -58,7 +49,6 @@ module BusStopCRUD
                 user_stop=UserStop.find_by(user: @user,label: label)
                 if user_stop== nil
                     puts "\nSorry, #{label.capitalize} is not a saved bus stop\n"
-                    menu_method
                 else
                     puts "Please enter the new address to find the closest bus stop"
                     puts "Enter the address in the format: #### Street, City, State\n"
@@ -66,7 +56,6 @@ module BusStopCRUD
                     location = Geocoder.search(address)
                     if location== nil
                         puts "\nSorry, that is not a valid address\n"
-                        menu_method
                     else 
                         loc_array=[location[0].latitude, location[0].longitude]
                         array=closest_stop(loc_array)
@@ -75,9 +64,6 @@ module BusStopCRUD
                         if res =="yes"
                             user_stop.update(stop_id: array[0].id)
                             puts "Bus stop #{array[0].stop_name} has been saved as #{label.capitalize}\n\n"
-                            menu_method
-                        else 
-                            menu_method
                         end
                     end
                 end
@@ -86,26 +72,16 @@ module BusStopCRUD
                 label=gets.chomp.downcase
                 stop_id=UserStop.find_by(label: label, user: @user).stop_id
                 @user.commutes.map do|commute|
-                    if commute.stops[0].id==stop_id || commute.stops[1].id==stop_id
-                        Commute.destroy(commute.id)
-                    end
+                    Commute.destroy(commute.id) if commute.stops[0].id==stop_id || commute.stops[1].id==stop_id
                 end
-                @user.user_stops.map do|user_stop|
-                    if user_stop.label==label
-                        UserStop.destroy(user_stop.id)
-                    end
-                end
+                @user.user_stops.map {|user_stop| UserStop.destroy(user_stop.id) if user_stop.label==label}
                 puts "Bus stop has been removed from your saved list\n\n"
-                menu_method
             when 5
                 puts "\nBus stop that is saved the most frequently is: #{UserStop.most_saved.stop_name}\n\n"
-                menu_method
             else #error message
                 puts  "Error: invalid value, please select from the following menu options\n"
-                output_stops_menu
-                response= gets.chomp
-                stop_menu_response(response)
             end
+            menu_method
         end
     end
 end
